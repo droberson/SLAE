@@ -63,7 +63,9 @@ lahf_lm abm 3dnowprefetch rdseed clflushopt
 
 ### Windows
 
-The easiest way I've found to do this so far is to use the "coreinfo"
+TODO: link to sysinternals
+
+The easiest way I've found to do this so far is to use the _coreinfo_
 utility that is included with Sysinternals:
 
 ```
@@ -231,4 +233,3 @@ This will output something like so:
 ### OSX
 
 TODO: this
-
