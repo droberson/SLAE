@@ -15,6 +15,38 @@ be ugly and require scraping off and re-applying thermal compound.
 
 ### Linux
 
+This is easily done with the _lscpu_ utility if it is available:
+```
+lscpu
+```
+
+```
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                2
+On-line CPU(s) list:   0,1
+Thread(s) per core:    1
+Core(s) per socket:    2
+Socket(s):             1
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 94
+Model name:            Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz
+Stepping:              3
+CPU MHz:               2592.177
+BogoMIPS:              5184.35
+Hypervisor vendor:     KVM
+Virtualization type:   full
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              6144K
+Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc pni pclmulqdq ssse3 cx16 sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx rdrand hypervisor lahf_lm abm 3dnowprefetch rdseed clflushopt
+```
+
+If _lscpu_ is not available, use the proc filesystem:
+
 ```
 cat /proc/cpuinfo |grep flags |head -n1
 ```
@@ -199,3 +231,4 @@ This will output something like so:
 ### OSX
 
 TODO: this
+
