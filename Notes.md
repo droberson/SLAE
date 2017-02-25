@@ -181,6 +181,7 @@ to narrow the search results down to the CPU's manufacturer (ex:
 inurl:intel.com i7-6700hq).
 
 ### FreeBSD
+TODO: OpenBSD, NetBSD, HardenedBSD, ...
 
 ```
 grep Features /var/run/dmesg.boot
