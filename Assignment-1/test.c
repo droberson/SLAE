@@ -1,3 +1,8 @@
+/* test.c -- by Daniel Roberson (daniel @ planethacker . net)
+ *        -- Reads shellcode from a file, outputs in C format, and attempts
+ *        -- to execute it.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
