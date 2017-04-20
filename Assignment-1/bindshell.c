@@ -1,5 +1,5 @@
-/* bindshell.c -- by Daniel Roberson
- *
+/* bindshell.c -- by Daniel Roberson (daniel @ planethacker . net)
+ *             -- binds a shell to port 4444 on 0.0.0.0
  */
 
 #include <unistd.h>
