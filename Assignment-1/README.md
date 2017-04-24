@@ -1,8 +1,10 @@
 # Assignment 1: TCP Bindshell
 
+## Criteria
+
 - Bind to port.
-- Exec shell on incoming connection
-- Port number should be easily configurable
+- Execute a shell on incoming connection.
+- Port number should be easily configurable.
 
 ## Building shellcode and test tools
 
