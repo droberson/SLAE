@@ -12,6 +12,7 @@ Prerequisites:
 
 - make
 - gcc
+- ability to compile 32 bit binaries via your distro's multiarch packages (ex: gcc-multilib)
 - nasm
 
 Simply type 'make' in this directory and everything should work unless one of the
