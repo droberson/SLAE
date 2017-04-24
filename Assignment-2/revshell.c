@@ -1,5 +1,5 @@
 /* revshell.c -- by Daniel Roberson (daniel @ planethacker . net)
- *            -- binds a shell to port 4444 on 0.0.0.0
+ *            -- reverse shell
  */
 #include <stdio.h>
 #include <unistd.h>
