@@ -24,7 +24,7 @@ int main (int argc, char *argv[]) {
     exit (EXIT_FAILURE);
   }
 
-  printf ("Testing shellcode contained in %s\n\n", argv[0]);
+  printf ("Testing shellcode contained in %s\n\n", argv[1]);
 
   if (stat(argv[1], &s) == -1) {
     perror("stat");
