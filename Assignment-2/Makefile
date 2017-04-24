@@ -4,7 +4,7 @@ revshell:
 	gcc -o revshell revshell.c
 
 test:
-	gcc -o test test.c
+	gcc -m32 -fno-stack-protector -z execstack  -o test test.c
 
 clean:
 	rm -rf *~ revshell test
