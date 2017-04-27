@@ -1,4 +1,4 @@
-all: egghunter egghunter-asm shellcode test write
+all: egghunter egghunter-asm shellcode test
 
 egghunter:
 	gcc -m32 -fno-stack-protector -z execstack -o egghunter egghunter.c
