@@ -1,5 +1,5 @@
 ; Egg Hunter Shellcode Linux x86
-; by Daniel Roberson 
+; by Daniel Roberson -- SLAE 877
 ;
 ;
 
