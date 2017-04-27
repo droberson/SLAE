@@ -1,3 +1,7 @@
+/* egghunter.c -- by Daniel Roberson SLAE 877
+ *
+ */
+
 #include <stdio.h>
 #include <string.h>
 
