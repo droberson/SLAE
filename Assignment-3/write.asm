@@ -5,6 +5,13 @@
 BITS 32
 
 
+;; egg.. 0x424a424a
+inc edx
+dec edx
+inc edx
+dec edx
+
+;; write "hi there" to stdout
 xor eax, eax
 xor ebx, ebx
 xor ecx, ecx
@@ -18,6 +25,7 @@ mov ecx, esp
 add edx, 9
 int 0x80
 
+;; exit(0)
 xor eax, eax
 inc eax
 dec ebx
