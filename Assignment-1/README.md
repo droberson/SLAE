@@ -33,8 +33,7 @@ By default, this is set to listen for connections on port 4444 and executes /bin
 
 - Translate this to hexadecimal in network byte order. This is done easily with python:
 
-	$ python -c "import socket; print hex(socket.htons(4444))"
-	0x5c11
+	$ python -c "import socket; print '0x%04x' % socket.htons(1280)"
 
 - Edit the PORT variable within bindshell.asm to contain this hexadecimal value.
 
