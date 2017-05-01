@@ -5,6 +5,9 @@
 ; Shellcode reads /etc/passwd and sends the content to 127.1.1.1 port 12345. 
 ; The file can be recieved using netcat:
 ; $ nc -l 127.1.1.1 12345
+;
+; Modified by Daniel Roberson SLAE-877
+;
 
 BITS 32
 section .text
