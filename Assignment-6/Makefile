@@ -1,4 +1,4 @@
-all: test wget passwd
+all: test wget passwd hosts
 
 wget:
 	nasm -o wget-original wget-original.asm
@@ -7,6 +7,10 @@ wget:
 passwd:
 	nasm -o passwd-original passwd-original.asm
 	nasm -o passwd-modified passwd-modified.asm
+
+hosts:
+	nasm -o hosts-original hosts-original.asm
+	nasm -o hosts-modified hosts-modified.asm
 
 test:
 	gcc -g -m32 -fno-stack-protector -z execstack -o test test.c
